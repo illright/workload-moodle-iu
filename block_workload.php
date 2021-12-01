@@ -6,7 +6,7 @@ function path_join(...$parts) {
 }
 
 // For objects $DB, $USER, $COURSE
-require(path_join(__DIR__, '../../config.php'));
+require_once(path_join(__DIR__, '../../config.php'));
 
 
 function get_upcoming_deadlines_from_course($course_id) {
@@ -122,17 +122,23 @@ class block_workload extends block_base {
         //   return $this->content;
         // }
 
-        if ($COURSE->id != NULL) {
-            $this->content = json_encode(
-                get_upcoming_deadlines_from_course($COURSE->id)
-            ) . '\n\n' . json_encode(
-                get_ungraded_submissions_from_course($COURSE->id, $USER->id)
+        $this->content = new stdClass;
+        if ($COURSE->id !== 1) {
+            $db_data = json_encode(
+                get_upcoming_deadlines_from_course($COURSE->id),
+                JSON_PRETTY_PRINT
+            ) . PHP_EOL . PHP_EOL . json_encode(
+                get_ungraded_submissions_from_course($COURSE->id, $USER->id),
+                JSON_PRETTY_PRINT
             );
         } else {
-            $this->content = json_encode(
-                get_upcoming_deadlines_for_student($USER->id)
+            $db_data = json_encode(
+                get_upcoming_deadlines_for_student($USER->id),
+                JSON_PRETTY_PRINT
             );
         }
+
+        $this->content->text = html_writer::tag('pre', $db_data);
 
         return $this->content;
     }
