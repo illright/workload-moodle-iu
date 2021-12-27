@@ -1,6 +1,7 @@
 lockfileVersion: 5.3
 
 specifiers:
+  '@types/node': ^17.0.5
   '@vitejs/plugin-vue': ^2.0.1
   autoprefixer: ^10.4.0
   postcss: ^8.4.5
@@ -15,6 +16,7 @@ dependencies:
   vue: 3.2.26
 
 devDependencies:
+  '@types/node': 17.0.5
   '@vitejs/plugin-vue': 2.0.1_vite@2.7.7+vue@3.2.26
   autoprefixer: 10.4.0_postcss@8.4.5
   postcss: 8.4.5
@@ -95,6 +97,10 @@ packages:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
+    dev: true
+
+  /@types/node/17.0.5:
+    resolution: {integrity: sha512-w3mrvNXLeDYV1GKTZorGJQivK6XLCoGwpnyJFbJVK/aTBQUxOCaa/GlFAAN3OTDFcb7h5tiFG+YXCO2By+riZw==}
     dev: true
 
   /@types/parse-json/4.0.0:
