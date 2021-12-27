@@ -1,5 +1,7 @@
 import { createApp } from 'vue';
-import App from '../../App.vue';
-import '../../index.css';
 
-createApp(App).mount('#app');
+import { StudentDashboardView } from '@/widgets/student-dashboard-view';
+
+import '@/index.css';
+
+createApp(StudentDashboardView).mount('#workload-target');
