@@ -2,6 +2,6 @@ import { createApp } from 'vue';
 
 import { StudentDashboardView } from '@/widgets/student-dashboard-view';
 
-import '@/index.css';
+import '@/shared/tailwind/index.css';
 
 createApp(StudentDashboardView).mount('#workload-target');
