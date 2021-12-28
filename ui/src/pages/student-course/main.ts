@@ -1,5 +1,7 @@
 import { createApp } from 'vue';
-import App from '../../App.vue';
-import '../../index.css';
 
-createApp(App).mount('#app');
+import { StudentCourseView } from '@/widgets/student-course-view';
+
+import '@/shared/tailwind/index.css';
+
+createApp(StudentCourseView).mount('#workload-target');
