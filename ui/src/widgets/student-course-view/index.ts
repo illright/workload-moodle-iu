@@ -1,1 +1,1 @@
-export { default as StudentCourseView } from './ui/student-course-view.vue';
+export { default as StudentCourseView, type StudentCourseViewProps } from './ui/student-course-view.vue';
