@@ -1,1 +1,2 @@
-export { default as StudentDashboardView, type StudentDashboardViewProps } from './ui/student-dashboard-view.vue';
+export { default as StudentDashboardView } from './ui/student-dashboard-view.vue';
+export type { StudentDashboardViewProps } from './types';

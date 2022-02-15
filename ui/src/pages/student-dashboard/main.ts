@@ -5,6 +5,5 @@ import { StudentDashboardView, type StudentDashboardViewProps } from '@/widgets/
 import '@/shared/tailwind/index.css';
 
 declare const upcomingDeadlines: StudentDashboardViewProps['upcomingDeadlines'];
-declare const ungradedSubmissions: StudentDashboardViewProps['ungradedSubmissions'];
 
-createApp(StudentDashboardView, { upcomingDeadlines, ungradedSubmissions }).mount('#workload-target');
+createApp(StudentDashboardView, { upcomingDeadlines }).mount('#workload-target');

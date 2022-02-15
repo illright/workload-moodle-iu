@@ -5,5 +5,6 @@ import { StudentCourseView, type StudentCourseViewProps } from '@/widgets/studen
 import '@/shared/tailwind/index.css';
 
 declare const upcomingDeadlines: StudentCourseViewProps['upcomingDeadlines'];
+declare const ungradedSubmissions: StudentCourseViewProps['ungradedSubmissions'];
 
-createApp(StudentCourseView, { upcomingDeadlines }).mount('#workload-target');
+createApp(StudentCourseView, { upcomingDeadlines, ungradedSubmissions }).mount('#workload-target');

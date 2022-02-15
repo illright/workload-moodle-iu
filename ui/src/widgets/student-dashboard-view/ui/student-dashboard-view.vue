@@ -1,19 +1,15 @@
-<script lang="ts">
-  export interface StudentDashboardViewProps {
+<script setup lang="ts">
+  import { AssignmentCard } from '@/entities/assignment';
+  import { AssignmentLink } from '@/features/go-to-assignment';
+
+  defineProps<{
     upcomingDeadlines: Array<{
       assignmentID: number;
       assignmentName: string;
       courseName: string;
       submissionDeadline: Date;
     }>;
-  }
-</script>
-
-<script setup lang="ts">
-  import { AssignmentCard } from '@/entities/assignment';
-  import { AssignmentLink } from '@/features/go-to-assignment';
-
-  defineProps<StudentDashboardViewProps>();
+  }>();
 </script>
 
 <template>

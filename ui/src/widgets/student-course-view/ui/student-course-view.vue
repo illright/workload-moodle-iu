@@ -1,5 +1,8 @@
-<script lang="ts">
-  export interface StudentCourseViewProps {
+<script setup lang="ts">
+  import { AssignmentCard } from '@/entities/assignment';
+  import { AssignmentLink } from '@/features/go-to-assignment';
+
+  defineProps<{
     upcomingDeadlines: Array<{
       assignmentID: number;
       assignmentName: string;
@@ -15,14 +18,7 @@
         gradedSubmissions: number;
       };
     }>;
-  }
-</script>
-
-<script setup lang="ts">
-  import { AssignmentCard } from '@/entities/assignment';
-  import { AssignmentLink } from '@/features/go-to-assignment';
-
-  defineProps<StudentCourseViewProps>();
+  }>();
 </script>
 
 <template>
