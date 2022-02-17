@@ -33,8 +33,8 @@ function is_student() {
 function resolve_hashed_script($script_name, $script_directory = '.') {
     $candidates = scandir($script_directory);
     foreach ($candidates as $candidate) {
-        if (stripos($candidate, $script_name) == 0) {
-            return $candidate;
+        if (stripos($candidate, $script_name) === 0) {
+            return path_join($script_directory, $candidate);
         }
     }
 
@@ -52,15 +52,15 @@ function generate_declaration($variable_name, $value) {
  * Optionally sets global variables for the script.
  */
 function embed_js($script_path, $variables = [], $target_div_id = 'workload-target') {
-    $script = file_get_contents(path_join(__DIR__, $script_path));
+    $script = file_get_contents($script_path);
 
     $init_data = array_map('generate_declaration', array_keys($variables), $variables).implode(';');
 
     $content = new stdClass;
     $content->text =
-        html_writer::empty_tag('div', array('id' => $target_div_id))
-        . html_writer::tag('script', $init_data)
-        . html_writer::tag('script', $script);
+        html_writer::tag('script', $init_data)
+        . html_writer::tag('script', $script, array('type' => "module"))
+        . html_writer::empty_tag('div', array('id' => $target_div_id));
     return $content;
 }
 
