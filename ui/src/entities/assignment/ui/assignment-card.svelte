@@ -1,11 +1,12 @@
 <script lang="ts">
-  import GradingProgress, { type GradingProgressProps } from './grading-progress.svelte';
+  import GradingProgress from './grading-progress.svelte';
+  import type { GradingProgress as GradingProgressProps } from '@/shared/api';
   import { HumanReadableDate } from '@/shared/ui';
 
-  export let courseName: string | undefined;
-  export let submissionDeadline: Date | undefined;
-  export let gradingDeadline: Date | undefined;
-  export let gradingProgress: GradingProgressProps | undefined;
+  export let courseName: string | undefined = undefined;
+  export let submissionDeadline: Date | undefined = undefined;
+  export let gradingDeadline: Date | undefined = undefined;
+  export let gradingProgress: GradingProgressProps | undefined = undefined;
 </script>
 
 <div class="bg-white border border-gray-300 p-3 mb-2 last:mb-0">

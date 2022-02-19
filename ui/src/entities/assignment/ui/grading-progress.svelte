@@ -1,11 +1,3 @@
-<script context="module" lang="ts">
-  export interface GradingProgressProps {
-    totalStudents: number;
-    submissions: number;
-    gradedSubmissions: number;
-  }
-</script>
-
 <script lang="ts">
   import { s } from '@/shared/language';
 
