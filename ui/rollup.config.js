@@ -33,7 +33,7 @@ function serve() {
 
 const plugins = [
 	svelte({
-		preprocess: sveltePreprocess({ sourceMap: !production }),
+		preprocess: sveltePreprocess({ postcss: true, sourceMap: !production }),
 		compilerOptions: {
 			dev: !production
 		}
