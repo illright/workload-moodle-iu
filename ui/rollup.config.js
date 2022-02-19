@@ -6,6 +6,7 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
 import typescript from '@rollup/plugin-typescript';
+import alias from '@rollup/plugin-alias';
 import css from 'rollup-plugin-css-only';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -32,6 +33,7 @@ function serve() {
 }
 
 const plugins = [
+	alias({ entries: [{ find: '@', replacement: './src' }] }),
 	svelte({
 		preprocess: sveltePreprocess({ postcss: true, sourceMap: !production }),
 		compilerOptions: {
