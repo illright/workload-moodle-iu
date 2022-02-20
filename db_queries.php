@@ -33,8 +33,8 @@ function get_upcoming_deadlines_for_student($DB, $student_id) {
             SELECT
                 {assign}.id,
                 {assign}.name,
-                {assign}.duedate
-                {course}.id AS course_id
+                {assign}.duedate,
+                {course}.id AS course_id,
                 {course}.fullname AS course_name
             FROM
                 {assign}

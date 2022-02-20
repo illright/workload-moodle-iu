@@ -43,7 +43,7 @@ function resolve_hashed_script($script_name, $script_directory = '.') {
 
 /** Generate a JS variable declaration with a given name and a JSON-serializable value. */
 function generate_declaration($variable_name, $value) {
-    return "const $variable_name = {json_encode($value)}";
+    return "const $variable_name = " . json_encode($value);
 }
 
 /**
@@ -54,7 +54,7 @@ function generate_declaration($variable_name, $value) {
 function embed_js($script_path, $variables = [], $target_div_id = 'workload-target') {
     $script = file_get_contents($script_path);
 
-    $init_data = array_map('generate_declaration', array_keys($variables), $variables).implode(';');
+    $init_data = implode(';', array_map('generate_declaration', array_keys($variables), $variables));
 
     $content = new stdClass;
     $content->text =
