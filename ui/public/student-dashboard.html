@@ -7,8 +7,37 @@
 	<title>Student, Dashboard — Study Workload</title>
 
 	<link rel='stylesheet' href='/build/bundle.css'>
+  <script>
+    const upcomingDeadlines = [
+      {
+        assignmentName: 'Homework Assignment №1. Symbolic differentiation in Racket',
+        assignmentID: 1337,
+        courseName: '[PP] Programming Paradigms',
+        submissionDeadline: new Date(2021, 10, 21)
+      },
+      {
+        assignmentName: 'Homework Assignment №2. Symbolic integration in Racket',
+        assignmentID: 1338,
+        courseName: '[PP] Programming Paradigms',
+        submissionDeadline: new Date(2021, 9, 21)
+      },
+    ];
+  </script>
 	<script defer src='/build/student-dashboard.entry.ts.bundle.js'></script>
 </head>
 
-<body></body>
+<body>
+	<main style="display: flex; justify-content: flex-end; font-family: sans-serif;">
+    <aside style="width: 374px; padding: 0.5rem; margin: 4rem;">
+      <div style="border: 1px solid #d1d5db">
+        <div style="padding: 0.75rem; color: #f97316; border-bottom-width: 1px; font-size: 1.125rem; line-height: 1.75rem;">
+          Workload
+        </div>
+        <div style="padding: 0.75rem; background: #f3f4f6;">
+          <div id="workload-target"></div>
+        </div>
+      </div>
+    </aside>
+  </main>
+</body>
 </html>

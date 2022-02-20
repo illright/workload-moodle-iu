@@ -33,7 +33,6 @@ function serve() {
 }
 
 const plugins = [
-	alias({ entries: [{ find: '@', replacement: './src' }] }),
 	svelte({
 		preprocess: sveltePreprocess({ postcss: true, sourceMap: !production }),
 		compilerOptions: {
@@ -51,6 +50,7 @@ const plugins = [
 		sourceMap: !production,
 		inlineSources: !production
 	}),
+	alias({ entries: [{ find: '@', replacement: './src' }] }),
 
 	!production && serve(),
 	!production && livereload('public'),

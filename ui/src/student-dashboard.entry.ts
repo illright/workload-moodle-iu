@@ -1,10 +1,9 @@
-import App from './App.svelte';
+import { StudentDashboardView } from '@/widgets/student-dashboard-view';
+import type { UpcomingDeadline } from '@/shared/api';
 
-const app = new App({
-	target: document.body,
-	props: {
-		name: 'world'
-	}
+declare const upcomingDeadlines: UpcomingDeadline[];
+
+export default new StudentDashboardView({
+	target: document.getElementById('workload-target'),
+	props: { upcomingDeadlines }
 });
-
-export default app;

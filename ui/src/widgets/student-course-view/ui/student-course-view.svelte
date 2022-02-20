@@ -35,3 +35,21 @@
     </svelte:fragment>
   </AssignmentCard>
 {/each}
+
+<style>
+  .mt-6 {
+    margin-top: 1.5rem;
+  }
+
+  .mb-3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .font-medium {
+    font-weight: 500;
+  }
+</style>
