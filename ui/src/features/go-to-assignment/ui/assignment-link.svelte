@@ -4,9 +4,13 @@
   const moodleAssignmentURL = '/mod/assign/view.php';
 </script>
 
-<a
-  class="underline text-orange-500 leading-5"
-  href="{moodleAssignmentURL}?id={id}"
->
+<a href="{moodleAssignmentURL}?id={id}">
   <slot />
 </a>
+
+<style>
+  a {
+    color: #f97316;
+    line-height: 1.25rem;
+  }
+</style>

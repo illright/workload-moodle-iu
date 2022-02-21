@@ -7,13 +7,52 @@
 </script>
 
 <figure>
-  <div class="rounded border border-gray-300 bg-gray-50 h-2 mt-4 overflow-hidden">
-    <div class="bg-blue-300 h-full" style:width={`${submissions / totalStudents * 100}%`}>
-      <div class="bg-blue-600 h-full" style:width={`${gradedSubmissions / submissions * 100}%`} />
+  <div class="progress-bar">
+    <div class="submissions" style:width={`${submissions / totalStudents * 100}%`}>
+      <div class="graded-submissions" style:width={`${gradedSubmissions / submissions * 100}%`} />
     </div>
   </div>
-  <figcaption class="text-sm">
-    <p class="mt-2">{submissions}/{totalStudents} student{s(submissions)} submitted</p>
-    <p class="mt-1">{gradedSubmissions}/{submissions} submission{s(gradedSubmissions)} graded</p>
+  <figcaption>
+    <p>{submissions}/{totalStudents} student{s(submissions)} submitted</p>
+    <p>{gradedSubmissions}/{submissions} submission{s(gradedSubmissions)} graded</p>
   </figcaption>
 </figure>
+
+<style>
+  figure {
+    margin: 0;
+  }
+
+  .progress-bar {
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    background: #f9fafb;
+    height: 0.5rem;
+    margin-top: 1rem;
+    overflow: hidden;
+  }
+
+  .submissions {
+    background: #93c5fd;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    height: 100%;
+  }
+
+  .graded-submissions {
+    background: #2563eb;
+    border-top-left-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    height: 100%;
+  }
+
+  figcaption {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-top: 0.5rem;
+  }
+
+  figcaption p {
+    margin-bottom: 0.25rem;
+  }
+</style>

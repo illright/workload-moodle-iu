@@ -64,6 +64,13 @@
 
 <strong>{value.toLocaleDateString()}</strong>
 &mdash;
-<span class={ dateEstimate.critical ? 'font-semibold text-red-700' : '' }>
+<span class:critical={dateEstimate.critical}>
   { dateEstimate.text }
 </span>
+
+<style>
+  .critical {
+    font-weight: 600;
+    color: rgba(185, 28, 28);
+  }
+</style>

@@ -6,7 +6,7 @@
   export let upcomingDeadlines: UpcomingDeadline[];
 </script>
 
-<p class="mb-3 text-center font-medium">Upcoming deadlines</p>
+<p>Upcoming deadlines</p>
 
 {#each upcomingDeadlines as assignment (assignment.assignmentID)}
   <AssignmentCard
@@ -22,15 +22,13 @@
 {/each}
 
 <style>
-  .mb-3 {
+	:global(p) {
+		margin: 0;
+	}
+
+  p {
     margin-bottom: 0.75rem;
-  }
-
-  .text-center {
-    text-align: center;
-  }
-
-  .font-medium {
     font-weight: 500;
+    text-align: center;
   }
 </style>

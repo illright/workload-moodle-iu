@@ -7,7 +7,7 @@
   export let ungradedSubmissions: UngradedSubmission[];
 </script>
 
-<p class="mb-3 text-center font-medium">Upcoming deadlines</p>
+<p>Upcoming deadlines</p>
 
 {#each upcomingDeadlines as assignment (assignment.assignmentID)}
   <AssignmentCard
@@ -21,7 +21,7 @@
   </AssignmentCard>
 {/each}
 
-<p class="mt-6 mb-3 text-center font-medium">Ungraded submissions</p>
+<p>Ungraded submissions</p>
 
 {#each ungradedSubmissions as assignment (assignment.assignmentID)}
   <AssignmentCard
@@ -37,19 +37,17 @@
 {/each}
 
 <style>
-  .mt-6 {
-    margin-top: 1.5rem;
-  }
+	:global(p) {
+		margin: 0;
+	}
 
-  .mb-3 {
+  p {
     margin-bottom: 0.75rem;
-  }
-
-  .text-center {
+    font-weight: 500;
     text-align: center;
   }
 
-  .font-medium {
-    font-weight: 500;
+  p:not(:first-child) {
+    margin-top: 1.5rem;
   }
 </style>

@@ -9,20 +9,20 @@
   export let gradingProgress: GradingProgressProps | undefined = undefined;
 </script>
 
-<div class="bg-white border border-gray-300 p-3 mb-2 last:mb-0">
-  <div class="flex flex-col">
+<div class="assignment-card">
+  <div class="flex-col">
     {#if courseName !== undefined}
-      <p class="text-xs mb-1">{ courseName }</p>
+      <p class="course-name">{ courseName }</p>
     {/if}
     <slot name="assignment-name"></slot>
   </div>
   {#if submissionDeadline !== undefined}
-    <div class="mt-3 text-sm">
+    <div class="status-text">
       Due on <HumanReadableDate value={submissionDeadline} />
     </div>
   {/if}
   {#if gradingDeadline !== undefined}
-    <div class="mt-3 text-sm">
+    <div class="status-text">
       To be graded by <HumanReadableDate value={gradingDeadline} />
     </div>
   {/if}
@@ -30,3 +30,33 @@
     <GradingProgress {...gradingProgress} />
   {/if}
 </div>
+
+<style>
+  .assignment-card {
+    background: white;
+    border: 1px solid #d1d5db;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .assignment-card:last-child {
+    margin-bottom: 0;
+  }
+
+  .course-name {
+    font-size: 0.85rem;
+    line-height: 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .status-text {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-top: 0.75rem;
+  }
+
+  .flex-col {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
