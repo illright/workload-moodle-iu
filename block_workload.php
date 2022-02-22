@@ -116,11 +116,4 @@ class block_workload extends block_base {
     //     $attributes = parent::html_attributes();
     //     return $attributes;
     // }
-
-    public function applicable_formats() {
-        return array(
-            'my' => true,
-            'course-view' => true,
-        );
-    }
 }
