@@ -1,11 +1,13 @@
 import { StudentDashboardView } from '@/widgets/student-dashboard-view';
-import type { UpcomingDeadline } from '@/shared/api';
+import { adaptUpcomingDeadline, type RawUpcomingDeadline } from '@/shared/api';
 
-declare const upcomingDeadlines: UpcomingDeadline[];
+declare const upcomingDeadlines: RawUpcomingDeadline[];
 
 document.addEventListener('DOMContentLoaded', () => {
 	new StudentDashboardView({
 		target: document.getElementById('workload-target'),
-		props: { upcomingDeadlines }
+		props: {
+			upcomingDeadlines: upcomingDeadlines.map(adaptUpcomingDeadline),
+		}
 	});
 });

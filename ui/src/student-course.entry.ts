@@ -1,12 +1,15 @@
 import { StudentCourseView } from '@/widgets/student-course-view';
-import type { UpcomingDeadline, UngradedSubmission } from '@/shared/api';
+import { adaptUngradedSubmission, adaptUpcomingDeadline, type RawUpcomingDeadline, type RawUngradedSubmission } from '@/shared/api';
 
-declare const upcomingDeadlines: UpcomingDeadline[];
-declare const ungradedSubmissions: UngradedSubmission[];
+declare const upcomingDeadlines: RawUpcomingDeadline[];
+declare const ungradedSubmissions: RawUngradedSubmission[];
 
 document.addEventListener('DOMContentLoaded', () => {
 	new StudentCourseView({
 		target: document.getElementById('workload-target'),
-		props: { upcomingDeadlines, ungradedSubmissions }
+		props: {
+			upcomingDeadlines: upcomingDeadlines.map(adaptUpcomingDeadline),
+			ungradedSubmissions: ungradedSubmissions.map(adaptUngradedSubmission),
+		}
 	});
 });
