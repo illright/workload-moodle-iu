@@ -109,8 +109,15 @@ class block_workload extends block_base {
         return $this->content;
     }
 
-    public function html_attributes() {
-        $attributes = parent::html_attributes();
-        return $attributes;
+    // public function html_attributes() {
+    //     $attributes = parent::html_attributes();
+    //     return $attributes;
+    // }
+
+    public function applicable_formats() {
+        return array(
+            'my' => true,
+            'course-view' => true,
+        );
     }
 }
