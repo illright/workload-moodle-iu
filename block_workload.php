@@ -51,16 +51,18 @@ function generate_declaration($variable_name, $value) {
  *
  * Optionally sets global variables for the script.
  */
-function embed_js($script_path, $variables = [], $target_div_id = 'workload-target') {
+function embed_js($script_path, $styles_path, $variables = [], $target_div_id = 'workload-target') {
     $script = file_get_contents($script_path);
+    $styles = file_get_contents($styles_path);
 
     $init_data = implode(';', array_map('generate_declaration', array_keys($variables), $variables));
 
     $content = new stdClass;
     $content->text =
         html_writer::tag('script', $init_data)
-        . html_writer::tag('script', $script, array('type' => "module"))
-        . html_writer::empty_tag('div', array('id' => $target_div_id));
+        . html_writer::tag('style', $styles)
+        . html_writer::tag('div', '', array('id' => $target_div_id))
+        . html_writer::tag('script', $script, array('defer' => ''));
     return $content;
 }
 
@@ -102,7 +104,8 @@ class block_workload extends block_base {
         }
 
         $this->content = embed_js(
-            resolve_hashed_script($script_name, path_join(__DIR__, './ui/dist/assets')),
+            resolve_hashed_script($script_name, path_join(__DIR__, './ui/public/build')),
+            path_join(__DIR__, './ui/public/build/bundle.css'),
             $variables
         );
 
