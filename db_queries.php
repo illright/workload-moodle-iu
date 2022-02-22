@@ -9,14 +9,20 @@ function get_upcoming_deadlines_from_course($DB, $course_id) {
     return array_values($DB->get_records_sql(
         <<<EOS
             SELECT
-                {assign}.id as assignmentID,
+                {course_modules}.id as assignmentID,
                 {assign}.name as assignmentName,
                 {assign}.duedate as submissionDeadline
             FROM
                 {assign}
+                INNER JOIN {course_modules}
+                    ON {assign}.id = {course_modules}.instance
+                INNER JOIN {modules}
+                    ON {course_modules}.module = {modules}.id
             WHERE
                 {assign}.course = :course_id
-                AND {assign}.duedate > unix_timestamp(now());
+                AND {assign}.duedate > unix_timestamp(now())
+                AND {modules}.name = 'assign'
+            ;
         EOS,
         ['course_id' => $course_id]
     ));
@@ -31,7 +37,7 @@ function get_upcoming_deadlines_for_student($DB, $student_id) {
     return array_values($DB->get_records_sql(
         <<<EOS
             SELECT
-                {assign}.id as assignmentID,
+                {course_modules}.id as assignmentID,
                 {assign}.name as assignmentName,
                 {assign}.duedate as submissionDeadline,
                 {course}.fullname AS courseName
@@ -39,6 +45,10 @@ function get_upcoming_deadlines_for_student($DB, $student_id) {
                 {assign}
                 INNER JOIN {course}
                     ON {assign}.course = {course}.id
+                INNER JOIN {course_modules}
+                    ON {assign}.id = {course_modules}.instance
+                INNER JOIN {modules}
+                    ON {course_modules}.module = {modules}.id
             WHERE
                 {assign}.course IN (
                     SELECT
@@ -50,7 +60,9 @@ function get_upcoming_deadlines_for_student($DB, $student_id) {
                     WHERE
                         {user_enrolments}.userid = :student_id
                 )
-                AND {assign}.duedate > unix_timestamp(now());
+                AND {assign}.duedate > unix_timestamp(now())
+                AND {modules}.name = 'assign'
+            ;
         EOS,
         ['student_id' => $student_id]
     ));
@@ -65,7 +77,7 @@ function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
     return array_values($DB->get_records_sql(
         <<<EOS
             SELECT
-                {assign}.id as assignmentID,
+                {course_modules}.id as assignmentID,
                 {assign}.name as assignmentName,
                 {assign}.gradingduedate as gradingDeadline,
                 SUM({assign_grades}.grade IS NOT NULL AND {assign_grades}.grade >= 0) AS gradedSubmissions,
@@ -74,6 +86,10 @@ function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
                 {assign_submission}
                 INNER JOIN {assign}
                     ON {assign_submission}.assignment = {assign}.id
+                INNER JOIN {course_modules}
+                    ON {assign}.id = {course_modules}.instance
+                INNER JOIN {modules}
+                    ON {course_modules}.module = {modules}.id
                 LEFT OUTER JOIN {assign_grades}
                     ON {assign_submission}.assignment = {assign_grades}.assignment
                     AND {assign_submission}.userid = {assign_grades}.userid
@@ -81,6 +97,7 @@ function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
             WHERE
                 {assign}.course = :course_id
                 AND {assign_submission}.status = 'submitted'
+                AND {modules}.name = 'assign'
             GROUP BY
                 {assign}.id,
                 {assign}.name
@@ -89,6 +106,7 @@ function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
                     {assign_submission}.userid = :student_id
                     AND ({assign_grades}.grade IS NULL OR {assign_grades}.grade < 0)
                 ) > 0
+            ;
         EOS,
         ['course_id' => $course_id, 'student_id' => $student_id]
     ));
