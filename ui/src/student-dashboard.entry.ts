@@ -3,7 +3,9 @@ import type { UpcomingDeadline } from '@/shared/api';
 
 declare const upcomingDeadlines: UpcomingDeadline[];
 
-export default new StudentDashboardView({
-	target: document.getElementById('workload-target'),
-	props: { upcomingDeadlines }
+document.addEventListener('DOMContentLoaded', () => {
+	new StudentDashboardView({
+		target: document.getElementById('workload-target'),
+		props: { upcomingDeadlines }
+	});
 });
