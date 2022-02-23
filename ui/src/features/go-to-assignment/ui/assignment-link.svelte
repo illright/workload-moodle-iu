@@ -10,7 +10,7 @@
 
 <style>
   a {
-    color: #f97316;
+    color: var(--color_secondary);
     line-height: 1.25rem;
   }
 </style>

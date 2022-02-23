@@ -9,7 +9,7 @@
   export let gradingProgress: GradingProgressProps | undefined = undefined;
 </script>
 
-<div class="assignment-card">
+<div class="card">
   <div class="flex-col">
     {#if courseName !== undefined}
       <p class="course-name">{ courseName }</p>
@@ -32,14 +32,12 @@
 </div>
 
 <style>
-  .assignment-card {
-    background: white;
-    border: 1px solid #d1d5db;
+  .card {
     padding: 0.75rem;
     margin-bottom: 0.5rem;
   }
 
-  .assignment-card:last-child {
+  .card:last-child {
     margin-bottom: 0;
   }
 
