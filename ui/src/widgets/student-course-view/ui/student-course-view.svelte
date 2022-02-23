@@ -19,27 +19,31 @@
       </AssignmentLink>
     </svelte:fragment>
   </AssignmentCard>
+{:else}
+  <p><strong>Nothing to worry about!</strong></p>
 {/each}
 
-<p>Ungraded submissions</p>
+{#if ungradedSubmissions.length > 0}
+  <p>Ungraded submissions</p>
 
-{#each ungradedSubmissions as assignment (assignment.assignmentID)}
-  <AssignmentCard
-    gradingDeadline={assignment.gradingDeadline}
-    gradingProgress={assignment.gradingProgress}
-  >
-    <svelte:fragment slot="assignment-name">
-      <AssignmentLink id={assignment.assignmentID}>
-        {assignment.assignmentName}
-      </AssignmentLink>
-    </svelte:fragment>
-  </AssignmentCard>
-{/each}
+  {#each ungradedSubmissions as assignment (assignment.assignmentID)}
+    <AssignmentCard
+      gradingDeadline={assignment.gradingDeadline}
+      gradingProgress={assignment.gradingProgress}
+    >
+      <svelte:fragment slot="assignment-name">
+        <AssignmentLink id={assignment.assignmentID}>
+          {assignment.assignmentName}
+        </AssignmentLink>
+      </svelte:fragment>
+    </AssignmentCard>
+  {/each}
+{/if}
 
 <style>
-	:global(p) {
-		margin: 0;
-	}
+  :global(p) {
+    margin: 0;
+  }
 
   p {
     margin-bottom: 0.75rem;
