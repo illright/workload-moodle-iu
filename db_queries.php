@@ -81,7 +81,17 @@ function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
                 {assign}.name as assignmentName,
                 {assign}.gradingduedate as gradingDeadline,
                 SUM({assign_grades}.grade IS NOT NULL AND {assign_grades}.grade >= 0) AS gradedSubmissions,
-                COUNT(*) AS submissions
+                COUNT(*) AS submissions,
+                (
+                    SELECT
+                        COUNT(*)
+                    FROM
+                        {user_enrolments}
+                    INNER JOIN {enrol}
+                        ON {user_enrolments}.enrolid = {enrol}.id
+                    WHERE
+                        {enrol}.courseid = {course_modules}.course
+                ) AS totalStudents
             FROM
                 {assign_submission}
                 INNER JOIN {assign}

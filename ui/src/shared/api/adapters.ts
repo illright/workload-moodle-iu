@@ -18,7 +18,7 @@ export function adaptUngradedSubmission(rawUngradedSubmission: RawUngradedSubmis
     gradingProgress: {
       gradedSubmissions: rawUngradedSubmission.gradedsubmissions,
       submissions: rawUngradedSubmission.submissions,
-      totalStudents: 0,
+      totalStudents: rawUngradedSubmission.totalstudents,
     },
   };
 }

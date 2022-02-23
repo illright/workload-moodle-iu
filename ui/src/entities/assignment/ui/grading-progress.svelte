@@ -8,8 +8,8 @@
 
 <figure>
   <div class="progress-bar">
-    <div class="submissions" style:width={`${submissions / totalStudents * 100}%`}>
-      <div class="graded-submissions" style:width={`${gradedSubmissions / submissions * 100}%`} />
+    <div class="submissions" style="width: {submissions / totalStudents * 100}%;">
+      <div class="graded-submissions" style="width: {gradedSubmissions / submissions * 100}%;" />
     </div>
   </div>
   <figcaption>
