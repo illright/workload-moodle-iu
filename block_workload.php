@@ -101,6 +101,9 @@ class block_workload extends block_base {
                 $variables = [];
                 $script_name = 'instructor-course';
             }
+        } else {
+            $this->content = new stdClass;
+            return $this->content;
         }
 
         $this->content = embed_js(
