@@ -205,4 +205,20 @@ function map_course_to_students($DB, $course_id) {
     ));
 }
 
+function get_course_dates($DB, $course_id) {
+    return $DB->get_record_sql(
+        <<<EOS
+            SELECT
+                {course}.startdate,
+                {course}.enddate
+            FROM
+                {course}
+            WHERE
+                {course}.id = :this_course_id
+            ;
+        EOS,
+        ['this_course_id' => $course_id]
+    );
+}
+
 ?>

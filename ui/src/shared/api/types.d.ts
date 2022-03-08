@@ -17,3 +17,20 @@ export interface UngradedSubmission {
   gradingDeadline: Date;
   gradingProgress: GradingProgress;
 }
+
+export interface CalendarDay {
+  date: Date;
+  assignmentAmount: number;
+  hasAssignmentFromSelectedCourse: boolean;
+}
+
+export interface SiblingAssignment {
+  courseID: CourseID;
+  start: number;
+  end: number;
+}
+
+export type CourseID = number;
+export type StudentID = number;
+export type DayBin = Map<CourseID, number>;
+export type CourseToStudents = Map<CourseID, StudentID[]>;

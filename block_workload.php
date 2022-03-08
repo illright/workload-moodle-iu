@@ -27,7 +27,7 @@ function is_on_course_page() {
  * TODO: not implemented
  */
 function is_student() {
-    return true;
+    return false;
 }
 
 function resolve_hashed_script($script_name, $script_directory = '.') {
@@ -81,14 +81,13 @@ class block_workload extends block_base {
         //   return $this->content;
         // }
 
+        $script_name = NULL;
         if (is_on_dashboard_page()) {
             if (is_student()) {
                 $variables = array(
                     'upcomingDeadlines' => get_upcoming_deadlines_for_student($DB, $USER->id),
                 );
                 $script_name = 'student-dashboard';
-            } else {
-                $script_name = NULL;
             }
         } else if (is_on_course_page()) {
             if (is_student()) {
@@ -98,10 +97,17 @@ class block_workload extends block_base {
                 );
                 $script_name = 'student-course';
             } else {
-                $variables = [];
+                $variables = array(
+                    'courseToStudents' => map_course_to_students($DB, $COURSE->id),
+                    'siblingAssignments' => get_sibling_assignments($DB, $COURSE->id, $USER->id),
+                    'courseDates' => get_course_dates($DB, $COURSE->id),
+                    'courseID' => $COURSE->id,
+                );
                 $script_name = 'instructor-course';
             }
-        } else {
+        }
+
+        if ($script_name == NULL) {
             $this->content = new stdClass;
             return $this->content;
         }

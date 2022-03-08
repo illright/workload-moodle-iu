@@ -18,3 +18,22 @@ export interface RawUngradedSubmission {
   submissions: number;
   totalstudents: number;
 }
+
+export interface RawCourseAndStudents {
+  id: string;
+  students: string;
+}
+
+export interface RawSiblingAssignment {
+  // The "name" field is deliberately ignored.
+  //   For some reason, it was needed for the query to produce
+  //   all of the results that it was supposed to.
+  courseid: string;
+  start: string;
+  end: string;
+}
+
+export interface RawCourseDates {
+  startdate: string;
+  enddate: string;
+}
