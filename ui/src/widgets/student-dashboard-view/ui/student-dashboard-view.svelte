@@ -19,6 +19,8 @@
       </AssignmentLink>
     </svelte:fragment>
   </AssignmentCard>
+{:else}
+  <p><strong>Nothing to worry about!</strong></p>
 {/each}
 
 <style>
