@@ -122,4 +122,87 @@ function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
     ));
 }
 
+/**
+ * Fetches a list of assignments along with their start and end timestamps.
+ *
+ * Only returns the assignments from courses that are taken by students
+ * who also take the course with the specified ID.
+ */
+function get_sibling_assignments($DB, $course_id) {
+    return array_values($DB->get_records_sql(
+        <<<EOS
+            SELECT
+                {assign}.name,
+                {assign}.course AS courseID,
+                {assign}.allowsubmissionsfromdate AS start,
+                {assign}.duedate AS end
+            FROM
+                {assign}
+            WHERE
+                {assign}.course IN (
+                    SELECT
+                        {enrol}.courseid
+                    FROM
+                        (
+                            SELECT
+                                {user_enrolments}.userid
+                            FROM
+                                {user_enrolments}
+                                INNER JOIN {enrol}
+                                    ON {enrol}.id = {user_enrolments}.enrolid
+                            WHERE
+                                {enrol}.courseid = :this_course_id
+                        ) enrolled_students
+                        LEFT OUTER JOIN {user_enrolments}
+                            ON enrolled_students.userid = {user_enrolments}.userid
+                        INNER JOIN {enrol}
+                            ON {user_enrolments}.enrolid = {enrol}.id
+                )
+            ;
+        EOS,
+        ['this_course_id' => $course_id]
+    ));
+}
+
+/**
+ * Fetches a mapping of course IDs to IDs of enrolled students.
+ *
+ * Only returns courses that have at least one student who also takes
+ * the course with the specified ID.
+ *
+ * Required in the course view for instructors.
+ */
+function map_course_to_students($DB, $course_id) {
+    return array_values($DB->get_records_sql(
+        <<<EOS
+            SELECT
+                {course}.id,
+                GROUP_CONCAT(
+                    {user_enrolments}.userid
+                ) as students
+            FROM
+                {course}
+                LEFT OUTER JOIN {enrol}
+                    ON {enrol}.courseid = {course}.id
+                INNER JOIN {user_enrolments}
+                    ON {user_enrolments}.enrolid = {enrol}.id
+            WHERE
+                {user_enrolments}.userid IN (
+                    SELECT
+                        {user_enrolments}.userid
+                    FROM
+                        {user_enrolments}
+                        INNER JOIN {enrol}
+                            ON {enrol}.id = {user_enrolments}.enrolid
+                    WHERE
+                        {enrol}.courseid = :this_course_id
+                )
+            GROUP BY
+                {course}.id
+            ;
+        EOS,
+        ['this_course_id' => $course_id]
+    ));
+}
+
 ?>
