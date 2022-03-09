@@ -57,7 +57,7 @@ const plugins = [
 	production && terser()
 ];
 
-const INPUT_DIR = 'src/';
+const INPUT_DIR = 'src/app';
 export default fs
 	.readdirSync(INPUT_DIR)
 	.filter(file => file.endsWith('.entry.ts'))
