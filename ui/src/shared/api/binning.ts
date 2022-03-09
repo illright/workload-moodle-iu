@@ -59,7 +59,7 @@ export function binAssignmentsToDays(
     );
 
     for (const day of span) {
-      if (bins[day] === null) {
+      if (bins[day] == null) {
         bins[day] = new Map();
       }
 

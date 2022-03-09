@@ -29,13 +29,12 @@ export function generateCalendar(
   studentsInCourse: Map<CourseID, StudentID[]>,
   countMode: CountMode,
   selectedCourse?: CourseID
-): CalendarDay[] {
+): Map<string, CalendarDay> {
   const dateCursor = new Date(courseStart.valueOf());
-  const calendar: CalendarDay[] = [];
+  const calendar = new Map<string, CalendarDay>();
 
   for (const bin of dayBins) {
     const day: CalendarDay = {
-      date: dateCursor,
       assignmentAmount: 0,
       hasAssignmentFromSelectedCourse: false,
     };
@@ -52,7 +51,9 @@ export function generateCalendar(
       }
     }
 
-    calendar.push(day);
+    if (day.assignmentAmount !== 0 || day.hasAssignmentFromSelectedCourse) {
+      calendar.set(dateCursor.toISOString().slice(0, 10), day);
+    }
     dateCursor.setDate(dateCursor.getDate() + 1);
   }
 

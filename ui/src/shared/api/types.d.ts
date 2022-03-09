@@ -19,7 +19,6 @@ export interface UngradedSubmission {
 }
 
 export interface CalendarDay {
-  date: Date;
   assignmentAmount: number;
   hasAssignmentFromSelectedCourse: boolean;
 }
