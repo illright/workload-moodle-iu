@@ -113,6 +113,8 @@
     width: 1.5rem;
     height: 1.5rem;
     padding: 0;
+    background: var(--mercury, #e5e5e5);
+    border: 1px solid #CED4DA;
   }
 
   .month-display {
@@ -127,6 +129,10 @@
   .weekday {
     text-align: center;
     width: 14.28571429%;
+  }
+
+  .weekday:last-child {
+    color: #BA0303;
   }
 
   .week {
@@ -152,6 +158,10 @@
     margin-bottom: 3px;
     text-align: center;
     width: 100%;
+  }
+
+  .day:last-child .date {
+    color: #BA0303;
   }
 
   .day .data {
