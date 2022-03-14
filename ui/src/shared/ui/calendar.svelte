@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ArrowLeftIcon, ArrowRightIcon } from 'svelte-feather-icons';
   import type { CalendarDay } from '../api/types';
   import {
     getWeekdays,
@@ -30,16 +31,16 @@
     shownCalendar = shownCalendar;
   }
 
-  function computeTitle(day: Day) {
+  function computeTitle(day: Day, highlight: boolean) {
     if (datesEqual(day.value, today)) {
-      if (day.disabled) {
-        return 'Today, not available';
+      if (highlight) {
+        return 'Today, has assignment from this course';
       } else {
         return 'Today';
       }
     }
-    if (day.disabled) {
-      return 'Not available';
+    if (highlight) {
+      return 'Has assignment from this course';
     }
     return null;
   }
@@ -53,13 +54,13 @@
 
 <div class="month-header">
   <button on:click={showPrevMonth} title="Previous month">
-    &lt;
+    <ArrowLeftIcon size="16" />
   </button>
   <div class="month-display">
     {headerFormatter.format(shownCalendar)}
   </div>
   <button on:click={showNextMonth} title="Next month">
-    &gt;
+    <ArrowRightIcon size="16" />
   </button>
 </div>
 <div class="weekdays">
@@ -83,12 +84,12 @@
         class:outside={day.outside}
         class:disabled={day.disabled}
         class:highlight={calendarData.get(dateKey)?.hasAssignmentFromSelectedCourse ?? false}
-        title={computeTitle(day)}
+        title={computeTitle(day, calendarData.get(dateKey)?.hasAssignmentFromSelectedCourse ?? false)}
       >
         <div class="date">
           {dayNumberFormatter.format(day.value)}
         </div>
-        <div class="data">
+        <div class="data" data-value={calendarData.get(dateKey)?.assignmentAmount ?? 0}>
           {calendarData.get(dateKey)?.assignmentAmount ?? 0}
         </div>
       </div>
@@ -106,80 +107,122 @@
   }
 
   .month-header button {
-    flex: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
   }
 
   .month-display {
-    min-width: 12em;
     text-align: center;
   }
 
-.weekdays {
-  display: flex;
-  font-size: 0.85em;
-  padding: 0.5em 1em;
-}
+  .weekdays {
+    display: flex;
+    font-size: 0.85em;
+  }
 
-.weekday {
-  text-align: center;
-  width: 14.28571429%;
-}
+  .weekday {
+    text-align: center;
+    width: 14.28571429%;
+  }
 
-.week {
-  display: flex;
-  justify-content: space-between;
-  --day-size: 2.25rem;
-  --day-gap: 0.0625rem;
-  --side-padding: 1rem;
-}
+  .week {
+    display: flex;
+    justify-content: space-between;
+  }
 
-.week:not(:last-child) {
-  margin-bottom: 1rem;
-}
+  .day {
+    color: #000;
+    font-size: 0.9em;
+    justify-content: center;
+    margin: 0 1px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 600;
+    width: 14.28571429%;
+  }
 
-.day:last-child {
-  padding-right: var(--side-padding);
-}
+  .day .date {
+    margin-top: 4px;
+    margin-bottom: 3px;
+    text-align: center;
+    width: 100%;
+  }
 
-.day:first-child {
-  padding-left: var(--side-padding);
-}
+  .day .data {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fira Code', monospace;
+    font-size: 1.125rem;
+    width: 2rem;
+    height: 2rem;
+    box-sizing: border-box;
+  }
 
-.day {
-  color: #000;
-  font-size: 0.9em;
-  width: var(--day-size);
-  height: var(--day-size);
-  justify-content: center;
-  margin: var(--day-gap);
-  z-index: 2;
-}
+  .day .data::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+    height: 100%;
+    background: var(--color_secondary);
+    box-sizing: border-box;
+  }
 
-.day.today {
-  color: purple;
-}
+  .day.highlight .data {
+    border: 2px solid #577CFF;
+  }
 
-.day.highlight {
-  border: 1px solid purple;
-}
+  .day.highlight .data::before {
+    border: 2px solid transparent;
+  }
 
-.day.outside {
-  color: gray;
-}
+  .day .data[data-value="0"]::before {
+    opacity: 10%;
+  }
 
-.day.disabled {
-  color: red;
-  position: relative;
-}
+  .day .data[data-value="1"]::before {
+    opacity: 20%;
+  }
 
-.day.disabled::before {
-  background: red;
-  content: '';
-  height: 1px;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translateX(-50%) rotate(-30deg);
-  width: 50%;
-}
+  .day .data[data-value="2"]::before {
+    opacity: 35%;
+  }
+
+  .day .data[data-value="3"]::before {
+    opacity: 50%;
+  }
+
+  .day .data[data-value="4"]::before {
+    opacity: 65%;
+  }
+
+  .day .data[data-value="5"]::before {
+    opacity: 80%;
+  }
+
+  .day .data[data-value="6"]::before {
+    opacity: 95%;
+  }
+
+  .day.today {
+    color: purple;
+  }
+
+  .day.outside {
+    color: gray;
+  }
+
+  .day.disabled {
+    visibility: hidden;
+  }
 </style>

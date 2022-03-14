@@ -31,4 +31,15 @@
   }
 </script>
 
-<Calendar {calendarData} disabledDates={[{ end: beforeCourseStart }, { start: afterCourseEnd }]} />
+<div class="calendar">
+  <Calendar {calendarData} disabledDates={[{ end: beforeCourseStart }, { start: afterCourseEnd }]} />
+</div>
+
+<style>
+  .calendar {
+    background: var(--white);
+    padding: 0.75rem 0.5rem;
+    border: 1px solid var(--mercury, #e5e5e5);
+    border-radius: 0.25rem;
+  }
+</style>
