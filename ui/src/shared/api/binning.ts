@@ -53,7 +53,11 @@ export function binAssignmentsToDays(
     );
 
     for (const day of span) {
-      if (bins[day] == null) {
+      if (day < 0 || day >= courseLength) {
+        continue;
+      }
+
+      if (bins[day] === null) {
         bins[day] = new Map();
       }
 
