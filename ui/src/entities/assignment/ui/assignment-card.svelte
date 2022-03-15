@@ -12,9 +12,9 @@
 <div class="card">
   <div class="flex-col">
     {#if courseName !== undefined}
-      <p class="course-name">{ courseName }</p>
+      <p class="course-name">{courseName}</p>
     {/if}
-    <slot name="assignment-name"></slot>
+    <slot name="assignment-name" />
   </div>
   {#if submissionDeadline !== undefined}
     <div class="status-text">

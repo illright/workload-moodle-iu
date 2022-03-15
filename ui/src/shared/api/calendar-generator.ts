@@ -1,27 +1,24 @@
 import type { CalendarDay, DayBin, CourseID, StudentID } from './types';
 
 export enum CountMode {
-  max = "max",
-  sum = "sum",
+  max = 'max',
+  sum = 'sum',
 }
 
 function sum(iterable: IterableIterator<number>) {
   return [...iterable].reduce((acc, val) => acc + val, 0);
 }
 
-function computeMostLoadedStudent(
-  dayBin: DayBin,
-  studentsInCourse: Map<CourseID, StudentID[]>
-) {
+function computeMostLoadedStudent(dayBin: DayBin, studentsInCourse: Map<CourseID, StudentID[]>) {
   const assignmentsPerStudent = new Map<StudentID, number>();
   for (const [courseID, amount] of dayBin.entries()) {
-    for (const studentID of (studentsInCourse.get(courseID) ?? [])) {
+    for (const studentID of studentsInCourse.get(courseID) ?? []) {
       assignmentsPerStudent.set(studentID, (assignmentsPerStudent.get(studentID) ?? 0) + amount);
     }
   }
 
   return Math.max(...assignmentsPerStudent.values());
-};
+}
 
 export function generateCalendar(
   dayBins: Array<DayBin | null>,

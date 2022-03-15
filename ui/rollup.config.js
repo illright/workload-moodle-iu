@@ -12,67 +12,67 @@ import css from 'rollup-plugin-css-only';
 const production = !process.env.ROLLUP_WATCH;
 
 function serve() {
-	let server;
+  let server;
 
-	function toExit() {
-		if (server) server.kill(0);
-	}
+  function toExit() {
+    if (server) server.kill(0);
+  }
 
-	return {
-		writeBundle() {
-			if (server) return;
-			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
-				stdio: ['ignore', 'inherit', 'inherit'],
-				shell: true
-			});
+  return {
+    writeBundle() {
+      if (server) return;
+      server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+        stdio: ['ignore', 'inherit', 'inherit'],
+        shell: true,
+      });
 
-			process.on('SIGTERM', toExit);
-			process.on('exit', toExit);
-		}
-	};
+      process.on('SIGTERM', toExit);
+      process.on('exit', toExit);
+    },
+  };
 }
 
 const plugins = [
-	svelte({
-		preprocess: sveltePreprocess({ sourceMap: !production }),
-		compilerOptions: {
-			dev: !production
-		}
-	}),
-	css({ output: 'bundle.css' }),
+  svelte({
+    preprocess: sveltePreprocess({ sourceMap: !production }),
+    compilerOptions: {
+      dev: !production,
+    },
+  }),
+  css({ output: 'bundle.css' }),
 
-	resolve({
-		browser: true,
-		dedupe: ['svelte']
-	}),
-	commonjs(),
-	typescript({
-		sourceMap: !production,
-		inlineSources: !production
-	}),
-	alias({ entries: [{ find: '@', replacement: './src' }] }),
+  resolve({
+    browser: true,
+    dedupe: ['svelte'],
+  }),
+  commonjs(),
+  typescript({
+    sourceMap: !production,
+    inlineSources: !production,
+  }),
+  alias({ entries: [{ find: '@', replacement: './src' }] }),
 
-	!production && serve(),
-	!production && livereload('public'),
-	production && terser()
+  !production && serve(),
+  !production && livereload('public'),
+  production && terser(),
 ];
 
 const INPUT_DIR = 'src/app/';
 export default fs
-	.readdirSync(INPUT_DIR)
-	.filter(file => file.endsWith('.entry.ts'))
-	.map(file => ({
-		input: INPUT_DIR + file,
-		output: {
-			inlineDynamicImports: true,
-			entryFileNames: `${file}.bundle.js`,
-			dir: 'public/build',
-			format: 'iife',
-			name: file,
-			sourcemap: false,
-		},
-		plugins,
-		watch: {
-			clearScreen: false
-		}
-	}));
+  .readdirSync(INPUT_DIR)
+  .filter((file) => file.endsWith('.entry.ts'))
+  .map((file) => ({
+    input: INPUT_DIR + file,
+    output: {
+      inlineDynamicImports: true,
+      entryFileNames: `${file}.bundle.js`,
+      dir: 'public/build',
+      format: 'iife',
+      name: file,
+      sourcemap: false,
+    },
+    plugins,
+    watch: {
+      clearScreen: false,
+    },
+  }));

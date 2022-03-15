@@ -54,7 +54,7 @@
       return {
         text: 'not any time soon',
         critical: false,
-      }
+      };
     }
   }
 
@@ -65,7 +65,7 @@
 <strong>{value.toLocaleDateString()}</strong>
 &mdash;
 <span class:critical={dateEstimate.critical}>
-  { dateEstimate.text }
+  {dateEstimate.text}
 </span>
 
 <style>

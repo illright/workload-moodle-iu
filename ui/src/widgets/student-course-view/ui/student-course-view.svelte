@@ -10,9 +10,7 @@
 <p>Upcoming deadlines</p>
 
 {#each upcomingDeadlines as assignment (assignment.assignmentID)}
-  <AssignmentCard
-    submissionDeadline={assignment.submissionDeadline}
-  >
+  <AssignmentCard submissionDeadline={assignment.submissionDeadline}>
     <svelte:fragment slot="assignment-name">
       <AssignmentLink id={assignment.assignmentID}>
         {assignment.assignmentName}

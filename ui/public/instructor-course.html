@@ -1,53 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset='utf-8'>
-	<meta name='viewport' content='width=device-width,initial-scale=1'>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-	<title>Student, Course — Study Workload</title>
+    <title>Student, Course — Study Workload</title>
 
-	<link rel='stylesheet' href='/build/bundle.css'>
-  <script>
-    const courseToStudents = [{"id":"2","students":"3,4"},{"id":"4","students":"3,5,6,7,8"},{"id":"5","students":"3,4,5,6,7,8"}];
-    const siblingAssignments = [{"name":"Assignment 1. Symbolic Differentiation in Racket","courseid":"2","start":"1646179200","end":"1646956800"},{"name":"Assignment 2. Symbolic Addition in Haskell","courseid":"2","start":"1639958400","end":"1640563200"},{"name":"Your entire thesis","courseid":"4","start":"1647216000","end":"1647302340"},{"name":"Lab 1","courseid":"5","start":"1645401600","end":"1645920000"},{"name":"Lab 2","courseid":"5","start":"1646006400","end":"1646524800"},{"name":"Lab 3","courseid":"5","start":"1646611200","end":"1647129600"},{"name":"Lab 4","courseid":"5","start":"1647216000","end":"1647734400"},{"name":"Lab 5","courseid":"5","start":"1647820800","end":"1648339200"},{"name":"Lab 6","courseid":"5","start":"1648422000","end":"1648940400"},{"name":"Lab 7","courseid":"5","start":"1649026800","end":"1649545200"},{"name":"Lab 8","courseid":"5","start":"1649631600","end":"1650150000"},{"name":"Lab 9","courseid":"5","start":"1650236400","end":"1650754800"}];
-    const courseDates = {"startdate":"1643673600","enddate":"1677110400"};
-    const courseID = "4";
-    const ungradedSubmissions = [
-      {
-        assignmentName: 'Homework Assignment №0. Symbolic reading in Racket',
-        assignmentID: 1339,
-        gradingDeadline: new Date(2021, 10, 21),
-        gradingProgress: {
-          totalStudents: 120,
-          submissions: 60,
-          gradedSubmissions: 40,
-        }
-      },
-    ];
-  </script>
-	<script defer src='/build/instructor-course.entry.ts.bundle.js'></script>
-  <style>
-    :root {
-      --color_primary: #88b77b;
-      --color_secondary: #f60;
-      --white: #fff;
-      --black: #000;
-    }
-  </style>
-</head>
+    <link rel="stylesheet" href="/build/bundle.css" />
+    <script>
+      const courseToStudents = [
+        { id: '2', students: '3,4' },
+        { id: '4', students: '3,5,6,7,8' },
+        { id: '5', students: '3,4,5,6,7,8' },
+      ];
+      const siblingAssignments = [
+        {
+          name: 'Assignment 1. Symbolic Differentiation in Racket',
+          courseid: '2',
+          start: '1646179200',
+          end: '1646956800',
+        },
+        {
+          name: 'Assignment 2. Symbolic Addition in Haskell',
+          courseid: '2',
+          start: '1639958400',
+          end: '1640563200',
+        },
+        { name: 'Your entire thesis', courseid: '4', start: '1647216000', end: '1647302340' },
+        { name: 'Lab 1', courseid: '5', start: '1645401600', end: '1645920000' },
+        { name: 'Lab 2', courseid: '5', start: '1646006400', end: '1646524800' },
+        { name: 'Lab 3', courseid: '5', start: '1646611200', end: '1647129600' },
+        { name: 'Lab 4', courseid: '5', start: '1647216000', end: '1647734400' },
+        { name: 'Lab 5', courseid: '5', start: '1647820800', end: '1648339200' },
+        { name: 'Lab 6', courseid: '5', start: '1648422000', end: '1648940400' },
+        { name: 'Lab 7', courseid: '5', start: '1649026800', end: '1649545200' },
+        { name: 'Lab 8', courseid: '5', start: '1649631600', end: '1650150000' },
+        { name: 'Lab 9', courseid: '5', start: '1650236400', end: '1650754800' },
+      ];
+      const courseDates = { startdate: '1643673600', enddate: '1677110400' };
+      const courseID = '4';
+      const ungradedSubmissions = [
+        {
+          assignmentName: 'Homework Assignment №0. Symbolic reading in Racket',
+          assignmentID: 1339,
+          gradingDeadline: new Date(2021, 10, 21),
+          gradingProgress: {
+            totalStudents: 120,
+            submissions: 60,
+            gradedSubmissions: 40,
+          },
+        },
+      ];
+    </script>
+    <script defer src="/build/instructor-course.entry.ts.bundle.js"></script>
+    <style>
+      :root {
+        --color_primary: #88b77b;
+        --color_secondary: #f60;
+        --white: #fff;
+        --black: #000;
+      }
+    </style>
+  </head>
 
-<body>
-	<main style="display: flex; justify-content: flex-end; font-family: sans-serif;">
-    <aside style="width: 374px; padding: 0.5rem; margin: 4rem;">
-      <div style="border: 1px solid #d1d5db">
-        <div style="padding: 0.75rem; color: #f97316; border-bottom-width: 1px; font-size: 1.125rem; line-height: 1.75rem;">
-          Workload
+  <body>
+    <main style="display: flex; justify-content: flex-end; font-family: sans-serif">
+      <aside style="width: 374px; padding: 0.5rem; margin: 4rem">
+        <div style="border: 1px solid #d1d5db">
+          <div
+            style="
+              padding: 0.75rem;
+              color: #f97316;
+              border-bottom-width: 1px;
+              font-size: 1.125rem;
+              line-height: 1.75rem;
+            "
+          >
+            Workload
+          </div>
+          <div style="padding: 0.75rem; background: #f3f4f6">
+            <div id="workload-target"></div>
+          </div>
         </div>
-        <div style="padding: 0.75rem; background: #f3f4f6;">
-          <div id="workload-target"></div>
-        </div>
-      </div>
-    </aside>
-  </main>
-</body>
+      </aside>
+    </main>
+  </body>
 </html>

@@ -1,13 +1,7 @@
 <script lang="ts">
   import { ArrowLeftIcon, ArrowRightIcon } from 'svelte-feather-icons';
   import type { CalendarDay } from '../api/types';
-  import {
-    getWeekdays,
-    datesEqual,
-    getCalendar,
-    type DateRanges,
-    type Day,
-  } from '../lib/date';
+  import { getWeekdays, datesEqual, getCalendar, type DateRanges, type Day } from '../lib/date';
 
   /** A set of dates to disable. */
   export let disabledDates: DateRanges = [];
@@ -84,7 +78,10 @@
         class:outside={day.outside}
         class:disabled={day.disabled}
         class:highlight={calendarData.get(dateKey)?.hasAssignmentFromSelectedCourse ?? false}
-        title={computeTitle(day, calendarData.get(dateKey)?.hasAssignmentFromSelectedCourse ?? false)}
+        title={computeTitle(
+          day,
+          calendarData.get(dateKey)?.hasAssignmentFromSelectedCourse ?? false
+        )}
       >
         <div class="date">
           {dayNumberFormatter.format(day.value)}
@@ -114,7 +111,7 @@
     height: 1.5rem;
     padding: 0;
     background: var(--mercury, #e5e5e5);
-    border: 1px solid #CED4DA;
+    border: 1px solid #ced4da;
   }
 
   .month-display {
@@ -132,7 +129,7 @@
   }
 
   .weekday:last-child {
-    color: #BA0303;
+    color: #ba0303;
   }
 
   .week {
@@ -161,7 +158,7 @@
   }
 
   .day:last-child .date {
-    color: #BA0303;
+    color: #ba0303;
   }
 
   .day .data {
@@ -177,7 +174,7 @@
   }
 
   .day .data::before {
-    content: "";
+    content: '';
     position: absolute;
     left: 0;
     top: 0;
@@ -189,38 +186,38 @@
   }
 
   .day.highlight .data {
-    border: 2px solid #577CFF;
+    border: 2px solid #577cff;
   }
 
   .day.highlight .data::before {
     border: 2px solid transparent;
   }
 
-  .day .data[data-value="0"]::before {
+  .day .data[data-value='0']::before {
     opacity: 10%;
   }
 
-  .day .data[data-value="1"]::before {
+  .day .data[data-value='1']::before {
     opacity: 20%;
   }
 
-  .day .data[data-value="2"]::before {
+  .day .data[data-value='2']::before {
     opacity: 35%;
   }
 
-  .day .data[data-value="3"]::before {
+  .day .data[data-value='3']::before {
     opacity: 50%;
   }
 
-  .day .data[data-value="4"]::before {
+  .day .data[data-value='4']::before {
     opacity: 65%;
   }
 
-  .day .data[data-value="5"]::before {
+  .day .data[data-value='5']::before {
     opacity: 80%;
   }
 
-  .day .data[data-value="6"]::before {
+  .day .data[data-value='6']::before {
     opacity: 95%;
   }
 

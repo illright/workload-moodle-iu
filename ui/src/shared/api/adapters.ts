@@ -1,5 +1,17 @@
-import type { UngradedSubmission, UpcomingDeadline, StudentID, CourseID, SiblingAssignment } from "./types";
-import type { RawUpcomingDeadline, RawUngradedSubmission, RawCourseAndStudents, RawSiblingAssignment, RawCourseDates } from "./plain-db-types";
+import type {
+  UngradedSubmission,
+  UpcomingDeadline,
+  StudentID,
+  CourseID,
+  SiblingAssignment,
+} from './types';
+import type {
+  RawUpcomingDeadline,
+  RawUngradedSubmission,
+  RawCourseAndStudents,
+  RawSiblingAssignment,
+  RawCourseDates,
+} from './plain-db-types';
 
 export function adaptUpcomingDeadline(rawUpcomingDeadline: RawUpcomingDeadline): UpcomingDeadline {
   return {
@@ -10,7 +22,9 @@ export function adaptUpcomingDeadline(rawUpcomingDeadline: RawUpcomingDeadline):
   };
 }
 
-export function adaptUngradedSubmission(rawUngradedSubmission: RawUngradedSubmission): UngradedSubmission {
+export function adaptUngradedSubmission(
+  rawUngradedSubmission: RawUngradedSubmission
+): UngradedSubmission {
   return {
     assignmentID: parseInt(rawUngradedSubmission.assignmentid, 10),
     assignmentName: rawUngradedSubmission.assignmentname,
@@ -23,7 +37,9 @@ export function adaptUngradedSubmission(rawUngradedSubmission: RawUngradedSubmis
   };
 }
 
-export function adaptCourseToStudentsEntry(rawEntry: RawCourseAndStudents): [CourseID, StudentID[]] {
+export function adaptCourseToStudentsEntry(
+  rawEntry: RawCourseAndStudents
+): [CourseID, StudentID[]] {
   return [parseInt(rawEntry.id, 10), JSON.parse(`[${rawEntry.students}]`)];
 }
 

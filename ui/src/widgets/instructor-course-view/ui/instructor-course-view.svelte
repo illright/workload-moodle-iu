@@ -1,7 +1,18 @@
 <script lang="ts">
   import { persistentWritable, localStorageAdapter } from 'svelte-persistent-writable';
-  import { binAssignmentsToDays, generateCalendar, BinningMode, CountMode, type CourseToStudents, type SiblingAssignment } from '@/shared/api';
+  import {
+    binAssignmentsToDays,
+    generateCalendar,
+    BinningMode,
+    CountMode,
+    type CourseToStudents,
+    type SiblingAssignment,
+    type UngradedSubmission,
+  } from '@/shared/api';
   import { Calendar } from '@/shared/ui';
+
+  import { AssignmentCard } from '@/entities/assignment';
+  import { AssignmentLink } from '@/features/go-to-assignment';
 
   interface InstructorPreferences {
     highlightThisCourse: boolean;
@@ -16,7 +27,7 @@
       assignmentCountMode: CountMode.max,
     },
     {
-      storage: localStorageAdapter('study-workload:preferences')
+      storage: localStorageAdapter('study-workload:preferences'),
     }
   );
 
@@ -25,6 +36,7 @@
   export let courseStartTimestamp: number;
   export let courseEndTimestamp: number;
   export let courseID: number;
+  export let ungradedSubmissions: UngradedSubmission[];
 
   $: beforeCourseStart = new Date((courseStartTimestamp - 24 * 60 * 60) * 1000);
   $: afterCourseEnd = new Date((courseEndTimestamp + 24 * 60 * 60) * 1000);
@@ -33,7 +45,7 @@
     siblingAssignments,
     courseStartTimestamp,
     courseEndTimestamp,
-    $preferences.binningMode,
+    $preferences.binningMode
   );
 
   $: calendarData = generateCalendar(
@@ -41,7 +53,7 @@
     new Date(courseStartTimestamp * 1000),
     courseToStudents,
     $preferences.assignmentCountMode,
-    $preferences.highlightThisCourse ? courseID : undefined,
+    $preferences.highlightThisCourse ? courseID : undefined
   );
 
   let preferencesShown = false;
@@ -54,7 +66,12 @@
       <form>
         <fieldset>
           <label>
-            <input type="checkbox" name="highlight" value="true" bind:checked={$preferences.highlightThisCourse} />
+            <input
+              type="checkbox"
+              name="highlight"
+              value="true"
+              bind:checked={$preferences.highlightThisCourse}
+            />
             Highlight days that have assignments from this course
           </label>
         </fieldset>
@@ -72,17 +89,27 @@
         <fieldset>
           <p>Amount of assignments per day:</p>
           <label>
-            <input type="radio" name="count-mode" value="sum" bind:group={$preferences.assignmentCountMode} />
+            <input
+              type="radio"
+              name="count-mode"
+              value="sum"
+              bind:group={$preferences.assignmentCountMode}
+            />
             Total amount of assignments among enrolled students
           </label>
           <label>
-            <input type="radio" name="count-mode" value="max" bind:group={$preferences.assignmentCountMode} />
+            <input
+              type="radio"
+              name="count-mode"
+              value="max"
+              bind:group={$preferences.assignmentCountMode}
+            />
             Maximal amount of assignments for a single student
           </label>
         </fieldset>
       </form>
     </div>
-    <button on:click={() => preferencesShown = false}>Save settings</button>
+    <button on:click={() => (preferencesShown = false)}>Save settings</button>
   {:else}
     <div class="sheet">
       <Calendar
@@ -90,9 +117,26 @@
         disabledDates={[{ end: beforeCourseStart }, { start: afterCourseEnd }]}
       />
     </div>
-    <button on:click={() => preferencesShown = true}>Configure calendar view</button>
+    <button on:click={() => (preferencesShown = true)}>Configure calendar view</button>
   {/if}
 </div>
+
+{#if ungradedSubmissions.length > 0}
+  <p>Ungraded submissions</p>
+
+  {#each ungradedSubmissions as assignment (assignment.assignmentID)}
+    <AssignmentCard
+      gradingDeadline={assignment.gradingDeadline}
+      gradingProgress={assignment.gradingProgress}
+    >
+      <svelte:fragment slot="assignment-name">
+        <AssignmentLink id={assignment.assignmentID}>
+          {assignment.assignmentName}
+        </AssignmentLink>
+      </svelte:fragment>
+    </AssignmentCard>
+  {/each}
+{/if}
 
 <style>
   .workload-calendar {
@@ -134,7 +178,7 @@
     padding: 0.5rem 1rem;
     margin-top: 0.5rem;
     background: var(--mercury, #e5e5e5);
-    border: 1px solid #CED4DA;
+    border: 1px solid #ced4da;
     align-self: flex-end;
   }
 </style>

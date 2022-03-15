@@ -51,7 +51,7 @@ function datesLessEqual(date1: Date | null, date2: Date | null) {
 
 /** Checks if the date is included in the given array of dates or ranges. */
 function dateIncluded(date: Date, dateRanges: DateRanges) {
-  return dateRanges.some(dateOrRange => {
+  return dateRanges.some((dateOrRange) => {
     if (isDate(dateOrRange)) {
       return datesEqual(dateOrRange, date);
     }
@@ -71,9 +71,7 @@ export function getCalendar(month: number, year: number, disabledDates: DateRang
   const dayCursor = new Date(year, month, 1);
 
   // Offset the start of the month to the closest left Monday
-  dayCursor.setDate(
-    1 - ((daysInWeek + dayCursor.getDay() - 1) % daysInWeek)
-  );
+  dayCursor.setDate(1 - ((daysInWeek + dayCursor.getDay() - 1) % daysInWeek));
 
   do {
     const week: Day[] = [];

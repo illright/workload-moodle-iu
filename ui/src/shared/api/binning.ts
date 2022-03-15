@@ -3,8 +3,8 @@ import type { SiblingAssignment, DayBin } from './types';
 const secondsInDay = 60 * 60 * 24;
 
 export enum BinningMode {
-  span = "span",
-  end = "end",
+  span = 'span',
+  end = 'end',
 }
 
 /**
@@ -13,18 +13,14 @@ export enum BinningMode {
  * @param [end] The end of the range (excluded)
  * @param [step=1] The distance between the numbers in the range
  */
-function* range(
-  start: number,
-  end?: number,
-  step: number = 1
-): Generator<number, void, void> {
+function* range(start: number, end?: number, step: number = 1): Generator<number, void, void> {
   if (end == null) {
     end = start;
     start = 0;
   }
 
   if (step === 0) {
-    throw new Error("Range must have a non-zero step.");
+    throw new Error('Range must have a non-zero step.');
   }
 
   if ((start >= end && step > 0) || (start <= end && step < 0)) {
@@ -49,10 +45,8 @@ export function binAssignmentsToDays(
   const bins: Array<DayBin | null> = new Array(courseLength).fill(null);
 
   for (const assignment of assignments) {
-    const assignmentStartDay =
-      Math.floor(assignment.start / secondsInDay) - courseStartDay;
-    const assignmentEndDay =
-      Math.floor(assignment.end / secondsInDay) - courseStartDay;
+    const assignmentStartDay = Math.floor(assignment.start / secondsInDay) - courseStartDay;
+    const assignmentEndDay = Math.floor(assignment.end / secondsInDay) - courseStartDay;
     const span = range(
       binningMode === BinningMode.span ? assignmentStartDay : assignmentEndDay,
       assignmentEndDay + 1
@@ -63,10 +57,7 @@ export function binAssignmentsToDays(
         bins[day] = new Map();
       }
 
-      bins[day].set(
-        assignment.courseID,
-        (bins[day].get(assignment.courseID) ?? 0) + 1
-      );
+      bins[day].set(assignment.courseID, (bins[day].get(assignment.courseID) ?? 0) + 1);
     }
   }
 

@@ -24,9 +24,9 @@
 {/each}
 
 <style>
-	:global(p) {
-		margin: 0;
-	}
+  :global(p) {
+    margin: 0;
+  }
 
   p {
     margin-bottom: 0.75rem;
