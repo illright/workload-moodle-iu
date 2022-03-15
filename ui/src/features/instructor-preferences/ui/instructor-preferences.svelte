@@ -69,4 +69,12 @@
     gap: 0.5rem;
     margin: 0.25rem 0;
   }
+
+  p {
+    font-weight: 700;
+  }
+
+  input {
+    margin-top: 0.25rem;
+  }
 </style>
