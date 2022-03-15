@@ -54,7 +54,7 @@ function datesLess(date1: Date | null, date2: Date | null) {
  */
 export function getCalendar(month: number, year: number, startFrom: Date, endAt: Date) {
   const calendar: Day[][] = [];
-  const dayCursor = new Date(year, month, 1);
+  const dayCursor = new Date(Date.UTC(year, month, 1));
 
   // Offset the start of the month to the closest left Monday
   dayCursor.setDate(1 - ((daysInWeek + dayCursor.getDay() - 1) % daysInWeek));
