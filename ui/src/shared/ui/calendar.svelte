@@ -1,12 +1,11 @@
 <script lang="ts">
   import { ArrowLeftIcon, ArrowRightIcon } from 'svelte-feather-icons';
   import type { CalendarDay } from '../api/types';
-  import { getWeekdays, datesEqual, getCalendar, type DateRanges, type Day } from '../lib/date';
-
-  /** A set of dates to disable. */
-  export let disabledDates: DateRanges = [];
+  import { getWeekdays, datesEqual, getCalendar, type Day } from '../lib/date';
 
   export let calendarData: Map<string, CalendarDay>;
+  export let startFrom: Date;
+  export let endAt: Date;
 
   const weekdays = getWeekdays();
 
@@ -20,6 +19,7 @@
     shownCalendar.setMonth(shownCalendar.getMonth() - 1);
     shownCalendar = shownCalendar;
   }
+
   function showNextMonth() {
     shownCalendar.setMonth(shownCalendar.getMonth() + 1);
     shownCalendar = shownCalendar;
@@ -47,13 +47,23 @@
 </script>
 
 <div class="month-header">
-  <button on:click={showPrevMonth} title="Previous month">
+  <button
+    on:click={showPrevMonth}
+    title="Previous month"
+    disabled={shownCalendar.getFullYear() === startFrom.getFullYear() &&
+      shownCalendar.getMonth() === startFrom.getMonth()}
+  >
     <ArrowLeftIcon size="16" />
   </button>
   <div class="month-display">
     {headerFormatter.format(shownCalendar)}
   </div>
-  <button on:click={showNextMonth} title="Next month">
+  <button
+    on:click={showNextMonth}
+    title="Next month"
+    disabled={shownCalendar.getFullYear() === endAt.getFullYear() &&
+      shownCalendar.getMonth() === endAt.getMonth()}
+  >
     <ArrowRightIcon size="16" />
   </button>
 </div>
@@ -62,7 +72,7 @@
     <span class="weekday">{dayName}</span>
   {/each}
 </div>
-{#each getCalendar(month, year, disabledDates) as week}
+{#each getCalendar(month, year, startFrom, endAt) as week}
   <div class="week">
     <!--
       The following .day elements may have one of the classes:

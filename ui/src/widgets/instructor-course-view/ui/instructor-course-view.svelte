@@ -114,7 +114,8 @@
     <div class="sheet">
       <Calendar
         {calendarData}
-        disabledDates={[{ end: beforeCourseStart }, { start: afterCourseEnd }]}
+        startFrom={courseStart}
+        endAt={courseEnd}
       />
     </div>
     <button on:click={() => (preferencesShown = true)}>Configure calendar view</button>
