@@ -101,6 +101,7 @@ class block_workload extends block_base {
                     'courseToStudents' => map_course_to_students($DB, $COURSE->id),
                     'siblingAssignments' => get_sibling_assignments($DB, $COURSE->id, $USER->id),
                     'courseDates' => get_course_dates($DB, $COURSE->id),
+                    'ungradedSubmissions' => get_all_ungraded_submissions_from_course($DB, $COURSE->id),
                     'courseID' => $COURSE->id,
                 );
                 $script_name = 'instructor-course';

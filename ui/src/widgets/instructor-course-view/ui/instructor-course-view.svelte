@@ -39,6 +39,7 @@
   let preferencesShown = false;
 </script>
 
+<p class="section-divider">Workload per day</p>
 <div class="workload-calendar">
   {#if preferencesShown}
     <div class="sheet">
@@ -58,7 +59,7 @@
 </div>
 
 {#if ungradedSubmissions.length > 0}
-  <p>Ungraded submissions</p>
+  <p class="section-divider">Ungraded assignments</p>
 
   {#each ungradedSubmissions as assignment (assignment.assignmentID)}
     <AssignmentCard
@@ -95,6 +96,16 @@
     margin-top: 0.5rem;
     background: var(--mercury, #e5e5e5);
     border: 1px solid #ced4da;
+    color: var(--black, #000);
     align-self: flex-end;
+  }
+
+  .section-divider {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-divider:not(:first-child) {
+    margin-top: 1.5rem;
   }
 </style>

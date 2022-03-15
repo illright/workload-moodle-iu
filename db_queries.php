@@ -71,7 +71,7 @@ function get_upcoming_deadlines_for_student($DB, $student_id) {
 /**
  * Fetches all assignments of a given course that have ungraded submissions from a given student.
  *
- * Required in the course view for both students and instructors.
+ * Required in the course view for students.
  */
 function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
     return array_values($DB->get_records_sql(
@@ -116,6 +116,57 @@ function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
                     {assign_submission}.userid = :student_id
                     AND ({assign_grades}.grade IS NULL OR {assign_grades}.grade < 0)
                 ) > 0
+            ;
+        EOS,
+        ['course_id' => $course_id, 'student_id' => $student_id]
+    ));
+}
+
+/**
+ * Fetches all assignments of a given course that have ungraded submissions from all students.
+ *
+ * Required in the course view for instructors.
+ */
+function get_all_ungraded_submissions_from_course($DB, $course_id) {
+    return array_values($DB->get_records_sql(
+        <<<EOS
+            SELECT
+                {course_modules}.id as assignmentID,
+                {assign}.name as assignmentName,
+                {assign}.gradingduedate as gradingDeadline,
+                SUM({assign_grades}.grade IS NOT NULL AND {assign_grades}.grade >= 0) AS gradedSubmissions,
+                COUNT(*) AS submissions,
+                (
+                    SELECT
+                        COUNT(*)
+                    FROM
+                        {user_enrolments}
+                    INNER JOIN {enrol}
+                        ON {user_enrolments}.enrolid = {enrol}.id
+                    WHERE
+                        {enrol}.courseid = {course_modules}.course
+                ) AS totalStudents
+            FROM
+                {assign_submission}
+                INNER JOIN {assign}
+                    ON {assign_submission}.assignment = {assign}.id
+                INNER JOIN {course_modules}
+                    ON {assign}.id = {course_modules}.instance
+                INNER JOIN {modules}
+                    ON {course_modules}.module = {modules}.id
+                LEFT OUTER JOIN {assign_grades}
+                    ON {assign_submission}.assignment = {assign_grades}.assignment
+                    AND {assign_submission}.userid = {assign_grades}.userid
+                    AND {assign_submission}.attemptnumber = {assign_grades}.attemptnumber
+            WHERE
+                {assign}.course = :course_id
+                AND {assign_submission}.status = 'submitted'
+                AND {modules}.name = 'assign'
+            GROUP BY
+                {assign}.id,
+                {assign}.name
+            HAVING
+                SUM({assign_grades}.grade IS NULL OR {assign_grades}.grade < 0) > 0
             ;
         EOS,
         ['course_id' => $course_id, 'student_id' => $student_id]
