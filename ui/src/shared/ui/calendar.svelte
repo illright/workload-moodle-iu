@@ -122,6 +122,12 @@
     padding: 0;
     background: var(--mercury, #e5e5e5);
     border: 1px solid #ced4da;
+    color: var(--black, #000);
+  }
+
+  .month-header button:disabled {
+    background: none;
+    cursor: not-allowed;
   }
 
   .month-display {
