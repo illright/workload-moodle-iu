@@ -272,4 +272,47 @@ function get_course_dates($DB, $course_id) {
     );
 }
 
+function is_student_of_any_course($DB, $user_id) {
+    return $DB->get_record_sql(
+        <<<EOS
+            SELECT
+                'student' IN (
+                    SELECT
+                        {role}.shortname
+                    FROM
+                        {role}
+                        INNER JOIN {role_assignments}
+                            ON {role_assignments}.roleid = {role}.id
+                    WHERE
+                        {role_assignments}.userid = :user_id
+                ) AS is_student
+            ;
+        EOS,
+        ['user_id' => $user_id]
+    )->is_student;
+}
+
+function is_student_of_this_course($DB, $user_id, $course_id) {
+    return $DB->get_record_sql(
+        <<<EOS
+            SELECT
+                'student' IN (
+                    SELECT
+                        {role}.shortname
+                    FROM
+                        {role}
+                        INNER JOIN {role_assignments}
+                            ON {role_assignments}.roleid = {role}.id
+                        INNER JOIN {context}
+                            ON {context}.id = {role_assignments}.contextid
+                    WHERE
+                        {role_assignments}.userid = :user_id
+                        AND {context}.instanceid = :this_course_id
+                ) AS is_student
+            ;
+        EOS,
+        ['user_id' => $user_id, 'this_course_id' => $course_id]
+    )->is_student;
+}
+
 ?>

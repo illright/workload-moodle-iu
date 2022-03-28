@@ -21,15 +21,6 @@ function is_on_course_page() {
     return strpos(getcwd(), 'course') !== false;
 }
 
-/**
- * Determines if the Moodle user is a student.
- *
- * TODO: not implemented
- */
-function is_student() {
-    return false;
-}
-
 function resolve_hashed_script($script_name, $script_directory = '.') {
     $candidates = scandir($script_directory);
     foreach ($candidates as $candidate) {
@@ -76,6 +67,11 @@ class block_workload extends block_base {
         global $COURSE;
         global $DB;
 
+        if (!$this->should_be_shown_on_this_page()) {
+            $this->content = new stdClass;
+            return $this->content;
+        }
+
         // Commented out in hopes of faster reloading in development
         // if ($this->content !== null) {
         //   return $this->content;
@@ -83,14 +79,14 @@ class block_workload extends block_base {
 
         $script_name = NULL;
         if (is_on_dashboard_page()) {
-            if (is_student()) {
+            if (is_student_of_any_course($DB, $USER->id)) {
                 $variables = array(
                     'upcomingDeadlines' => get_upcoming_deadlines_for_student($DB, $USER->id),
                 );
                 $script_name = 'student-dashboard';
             }
         } else if (is_on_course_page()) {
-            if (is_student()) {
+            if (is_student_of_this_course($DB, $USER->id, $COURSE->id)) {
                 $variables = array(
                     'upcomingDeadlines' => get_upcoming_deadlines_from_course($DB, $COURSE->id),
                     'ungradedSubmissions' => get_ungraded_submissions_from_course($DB, $COURSE->id, $USER->id),
@@ -122,8 +118,11 @@ class block_workload extends block_base {
         return $this->content;
     }
 
-    // public function html_attributes() {
-    //     $attributes = parent::html_attributes();
-    //     return $attributes;
-    // }
+    public function should_be_shown_on_this_page() {
+        return (
+            strpos($_SERVER['SCRIPT_FILENAME'], '/course/modedit') !== false
+            || strpos($_SERVER['SCRIPT_FILENAME'], '/course/view') !== false
+            || strpos($_SERVER['SCRIPT_FILENAME'], '/my') !== false
+        );
+    }
 }
