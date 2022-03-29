@@ -26,27 +26,6 @@
       Only the day the assignment is due
     </label>
   </fieldset>
-  <fieldset>
-    <p>Amount of assignments per day:</p>
-    <label>
-      <input
-        type="radio"
-        name="count-mode"
-        value="sum"
-        bind:group={$preferences.assignmentCountMode}
-      />
-      Total amount of assignments among enrolled students
-    </label>
-    <label>
-      <input
-        type="radio"
-        name="count-mode"
-        value="max"
-        bind:group={$preferences.assignmentCountMode}
-      />
-      Maximal amount of assignments for a single student
-    </label>
-  </fieldset>
 </form>
 
 <style>
