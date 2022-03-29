@@ -37,6 +37,7 @@
   );
 
   let preferencesShown = false;
+  let shownCalendar = new Date();
 </script>
 
 <p class="section-divider">Workload per day</p>
@@ -50,6 +51,7 @@
     <div class="sheet">
       <Calendar
         {calendarData}
+        bind:shownCalendar
         startFrom={courseStart}
         endAt={courseEnd}
       />

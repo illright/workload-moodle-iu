@@ -11,7 +11,7 @@
 
   const today = new Date();
 
-  let shownCalendar = new Date();
+  export let shownCalendar = new Date();
   $: month = shownCalendar.getMonth();
   $: year = shownCalendar.getFullYear();
 
