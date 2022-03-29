@@ -9,6 +9,7 @@ import {
   type RawCourseDates,
   type RawUngradedSubmission,
 } from '@/shared/api';
+import { byGradingDeadline } from '@/shared/lib';
 
 declare const courseToStudents: RawCourseAndStudents[];
 declare const siblingAssignments: RawSiblingAssignment[];
@@ -23,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
       courseToStudents: new Map(courseToStudents.map(adaptCourseToStudentsEntry)),
       siblingAssignments: siblingAssignments.map(adaptSiblingAssignment),
       courseID: parseInt(courseID, 10),
-      ungradedSubmissions: ungradedSubmissions.map(adaptUngradedSubmission),
+      ungradedSubmissions: ungradedSubmissions.map(adaptUngradedSubmission).sort(byGradingDeadline),
       ...adaptCourseDates(courseDates),
     },
   });
