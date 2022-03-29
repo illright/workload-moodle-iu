@@ -7,6 +7,8 @@
   export let submissionDeadline: Date | undefined = undefined;
   export let gradingDeadline: Date | undefined = undefined;
   export let gradingProgress: GradingProgressProps | undefined = undefined;
+
+  export let verboseGrading = false;
 </script>
 
 <div class="card">
@@ -27,7 +29,7 @@
     </div>
   {/if}
   {#if gradingProgress !== undefined}
-    <GradingProgress {...gradingProgress} />
+    <GradingProgress {...gradingProgress} verbose={verboseGrading} />
   {/if}
 </div>
 

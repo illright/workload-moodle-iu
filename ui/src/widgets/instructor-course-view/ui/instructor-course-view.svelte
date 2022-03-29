@@ -65,6 +65,7 @@
     <AssignmentCard
       gradingDeadline={assignment.gradingDeadline}
       gradingProgress={assignment.gradingProgress}
+      verboseGrading
     >
       <svelte:fragment slot="assignment-name">
         <AssignmentLink id={assignment.assignmentID}>

@@ -4,19 +4,25 @@
   export let totalStudents: number;
   export let submissions: number;
   export let gradedSubmissions: number;
+
+  export let verbose = false;
 </script>
 
-<figure>
-  <div class="progress-bar">
-    <div class="submissions" style="width: {(submissions / totalStudents) * 100}%;">
-      <div class="graded-submissions" style="width: {(gradedSubmissions / submissions) * 100}%;" />
+{#if verbose}
+  <figure>
+    <div class="progress-bar">
+      <div class="submissions" style="width: {(submissions / totalStudents) * 100}%;">
+        <div class="graded-submissions" style="width: {(gradedSubmissions / submissions) * 100}%;" />
+      </div>
     </div>
-  </div>
-  <figcaption>
-    <p>{submissions}/{totalStudents} student{s(submissions)} submitted</p>
-    <p>{gradedSubmissions}/{submissions} submission{s(gradedSubmissions)} graded</p>
-  </figcaption>
-</figure>
+    <figcaption>
+      <p>{submissions}/{totalStudents} student{s(submissions)} submitted</p>
+      <p>{gradedSubmissions}/{submissions} submission{s(gradedSubmissions)} graded</p>
+    </figcaption>
+  </figure>
+{:else}
+  <p class="status-text">{Math.round(gradedSubmissions / submissions * 100)}% of all submissions graded</p>
+{/if}
 
 <style>
   figure {
@@ -54,5 +60,11 @@
 
   figcaption p {
     margin-bottom: 0.25rem;
+  }
+
+  .status-text {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin-top: 0.75rem;
   }
 </style>
