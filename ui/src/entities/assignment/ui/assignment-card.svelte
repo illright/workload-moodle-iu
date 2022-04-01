@@ -37,6 +37,8 @@
   .card {
     padding: 0.75rem;
     margin-bottom: 0.5rem;
+    background-color: var(--white);
+    border: 1px solid var(--mercury, #e5e5e5);
   }
 
   .card:last-child {
