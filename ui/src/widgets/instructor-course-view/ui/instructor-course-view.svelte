@@ -40,7 +40,8 @@
   let shownCalendar = new Date();
 </script>
 
-<p class="section-divider">Workload per day</p>
+<p class="section-divider">Number of assignments per day</p>
+<p class="section-description">Counts the load of the most loaded student. Includes assignments from other courses.</p>
 <div class="workload-calendar">
   {#if preferencesShown}
     <div class="sheet">
@@ -62,6 +63,7 @@
 
 {#if ungradedSubmissions.length > 0}
   <p class="section-divider">Ungraded assignments</p>
+  <p class="section-description">Assignments that have at least one ungraded submission and their grading progress.</p>
 
   {#each ungradedSubmissions as assignment (assignment.assignmentID)}
     <AssignmentCard
@@ -105,7 +107,11 @@
 
   .section-divider {
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .section-description {
+    margin-bottom: 1rem;
   }
 
   .section-divider:not(:first-child) {
