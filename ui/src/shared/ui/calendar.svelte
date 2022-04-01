@@ -25,18 +25,24 @@
     shownCalendar = shownCalendar;
   }
 
+  function capitalize(text: string) {
+    return (text[0]?.toLocaleUpperCase() ?? '') + text.slice(1);
+  }
+
+  const sunday = 0;
   function computeTitle(day: Day, highlight: boolean) {
+    const parts = [];
+
     if (datesEqual(day.value, today)) {
-      if (highlight) {
-        return 'Today, has assignment from this course';
-      } else {
-        return 'Today';
-      }
+      parts.push('today');
     }
     if (highlight) {
-      return 'Has assignment from this course';
+      parts.push('has assignment from this course');
     }
-    return null;
+    if (day.value.getDay() === sunday) {
+      parts.push('weekend');
+    }
+    return capitalize(parts.join(', ')) || null;
   }
 
   const dayNumberFormatter = Intl.DateTimeFormat(undefined, { day: 'numeric' });
