@@ -10,9 +10,9 @@
 
 {#if verbose}
   <figure>
-    <div class="progress-bar">
-      <div class="submissions" style="width: {(submissions / totalStudents) * 100}%;">
-        <div class="graded-submissions" style="width: {(gradedSubmissions / submissions) * 100}%;" />
+    <div class="progress-bar" title="How many students still didn't submit">
+      <div class="bar submissions" style="width: {(submissions / totalStudents) * 100}%;" title="How many students submitted">
+        <div class="bar graded-submissions" style="width: {(gradedSubmissions / submissions) * 100}%;" title="How many submissions were graded" />
       </div>
     </div>
     <figcaption>
@@ -36,6 +36,7 @@
     height: 0.5rem;
     margin-top: 1rem;
     overflow: hidden;
+    cursor: help;
   }
 
   .submissions {
@@ -45,11 +46,22 @@
     height: 100%;
   }
 
+  .submissions:hover {
+    background: hsl(212, 96%, 85%);
+    cursor: help;
+  }
+
+
   .graded-submissions {
     background: #2563eb;
     border-top-left-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem;
     height: 100%;
+  }
+
+  .graded-submissions:hover {
+    background: hsl(221, 83%, 60%);
+    cursor: help;
   }
 
   figcaption {
