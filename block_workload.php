@@ -72,11 +72,6 @@ class block_workload extends block_base {
             return $this->content;
         }
 
-        // Commented out in hopes of faster reloading in development
-        // if ($this->content !== null) {
-        //   return $this->content;
-        // }
-
         $script_name = NULL;
         if (is_on_dashboard_page()) {
             if (is_student_of_any_course($DB, $USER->id)) {
