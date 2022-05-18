@@ -20,7 +20,7 @@ function get_upcoming_deadlines_from_course($DB, $course_id) {
                     ON {course_modules}.module = {modules}.id
             WHERE
                 {assign}.course = :course_id
-                AND {assign}.duedate > DATEDIFF(s, '1970-01-01 00:00:00', SYSDATETIME())
+                AND {assign}.duedate > unix_timestamp(now())
                 AND {modules}.name = 'assign'
             ;
         EOS,
@@ -60,7 +60,7 @@ function get_upcoming_deadlines_for_student($DB, $student_id) {
                     WHERE
                         {user_enrolments}.userid = :student_id
                 )
-                AND {assign}.duedate > DATEDIFF(s, '1970-01-01 00:00:00', SYSDATETIME())
+                AND {assign}.duedate > unix_timestamp(now())
                 AND {modules}.name = 'assign'
             ;
         EOS,
@@ -80,7 +80,7 @@ function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
                 {course_modules}.id as assignmentID,
                 {assign}.name as assignmentName,
                 {assign}.gradingduedate as gradingDeadline,
-                SUM(IIF({assign_grades}.grade IS NOT NULL, IIF({assign_grades}.grade >= 0, 1, 0), 0)) AS gradedSubmissions,
+                SUM({assign_grades}.grade IS NOT NULL AND {assign_grades}.grade >= 0) AS gradedSubmissions,
                 COUNT(*) AS submissions,
                 (
                     SELECT
@@ -113,7 +113,8 @@ function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
                 {assign}.name
             HAVING
                 SUM(
-                    IIF({assign_submission}.userid = :student_id, IIF({assign_grades}.grade IS NULL, 1, IIF({assign_grades}.grade < 0, 1, 0)), 0)
+                    {assign_submission}.userid = :student_id
+                    AND ({assign_grades}.grade IS NULL OR {assign_grades}.grade < 0)
                 ) > 0
             ;
         EOS,
@@ -133,7 +134,7 @@ function get_all_ungraded_submissions_from_course($DB, $course_id) {
                 {course_modules}.id as assignmentID,
                 {assign}.name as assignmentName,
                 {assign}.gradingduedate as gradingDeadline,
-                SUM(IIF({assign_grades}.grade IS NOT NULL, IIF({assign_grades}.grade >= 0, 1, 0), 0)) AS gradedSubmissions,
+                SUM({assign_grades}.grade IS NOT NULL AND {assign_grades}.grade >= 0) AS gradedSubmissions,
                 COUNT(*) AS submissions,
                 (
                     SELECT
@@ -165,7 +166,7 @@ function get_all_ungraded_submissions_from_course($DB, $course_id) {
                 {assign}.id,
                 {assign}.name
             HAVING
-                SUM(IIF({assign_grades}.grade IS NULL, 1, IIF({assign_grades}.grade < 0, 1, 0))) > 0
+                SUM({assign_grades}.grade IS NULL OR {assign_grades}.grade < 0) > 0
             ;
         EOS,
         ['course_id' => $course_id, 'student_id' => $student_id]
@@ -185,7 +186,7 @@ function get_sibling_assignments($DB, $course_id) {
                 {assign}.name,
                 {assign}.course AS courseID,
                 {assign}.allowsubmissionsfromdate AS start,
-                {assign}.duedate AS [end]
+                {assign}.duedate AS end
             FROM
                 {assign}
             WHERE
@@ -227,7 +228,9 @@ function map_course_to_students($DB, $course_id) {
         <<<EOS
             SELECT
                 {course}.id,
-                STRING_AGG({user_enrolments}.userid, ',') as students
+                GROUP_CONCAT(
+                    {user_enrolments}.userid
+                ) as students
             FROM
                 {course}
                 LEFT OUTER JOIN {enrol}
@@ -273,7 +276,7 @@ function is_student_of_any_course($DB, $user_id) {
     return $DB->get_record_sql(
         <<<EOS
             SELECT
-                IIF('student' IN (
+                'student' IN (
                     SELECT
                         {role}.shortname
                     FROM
@@ -282,7 +285,7 @@ function is_student_of_any_course($DB, $user_id) {
                             ON {role_assignments}.roleid = {role}.id
                     WHERE
                         {role_assignments}.userid = :user_id
-                ), 1, 0) AS is_student
+                ) AS is_student
             ;
         EOS,
         ['user_id' => $user_id]
@@ -293,7 +296,7 @@ function is_student_of_this_course($DB, $user_id, $course_id) {
     return $DB->get_record_sql(
         <<<EOS
             SELECT
-                IIF('student' IN (
+                'student' IN (
                     SELECT
                         {role}.shortname
                     FROM
@@ -305,7 +308,7 @@ function is_student_of_this_course($DB, $user_id, $course_id) {
                     WHERE
                         {role_assignments}.userid = :user_id
                         AND {context}.instanceid = :this_course_id
-                ), 1, 0) AS is_student
+                ) AS is_student
             ;
         EOS,
         ['user_id' => $user_id, 'this_course_id' => $course_id]
