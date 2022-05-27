@@ -109,8 +109,10 @@ function get_ungraded_submissions_from_course($DB, $course_id, $student_id) {
                 AND {assign_submission}.status = 'submitted'
                 AND {modules}.name = 'assign'
             GROUP BY
-                {assign}.id,
-                {assign}.name
+                {course_modules}.id,
+                {course_modules}.course,
+                {assign}.name,
+                {assign}.gradingduedate
             HAVING
                 SUM(
                     IIF({assign_submission}.userid = :student_id, IIF({assign_grades}.grade IS NULL, 1, IIF({assign_grades}.grade < 0, 1, 0)), 0)
@@ -162,8 +164,10 @@ function get_all_ungraded_submissions_from_course($DB, $course_id) {
                 AND {assign_submission}.status = 'submitted'
                 AND {modules}.name = 'assign'
             GROUP BY
-                {assign}.id,
-                {assign}.name
+                {course_modules}.id,
+                {course_modules}.course,
+                {assign}.name,
+                {assign}.gradingduedate
             HAVING
                 SUM(IIF({assign_grades}.grade IS NULL, 1, IIF({assign_grades}.grade < 0, 1, 0))) > 0
             ;
